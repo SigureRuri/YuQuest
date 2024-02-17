@@ -1,0 +1,4 @@
+name: YuQuest
+version: '${version}'
+main: com.github.sigureruri.yuquest.YuQuest
+api-version: '1.20'

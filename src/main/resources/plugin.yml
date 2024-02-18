@@ -2,3 +2,5 @@ name: YuQuest
 version: '${version}'
 main: com.github.sigureruri.yuquest.YuQuest
 api-version: '1.20'
+libraries:
+  - "org.jetbrains.kotlin:kotlin-stdlib:1.9.22"

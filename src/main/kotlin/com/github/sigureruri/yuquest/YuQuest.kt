@@ -1,14 +1,19 @@
 package com.github.sigureruri.yuquest
 
+import com.github.sigureruri.yuquest.playerdata.PlayerDataManager
+import com.github.sigureruri.yuquest.playerdata.local.LocalPlayerDataHolder
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class YuQuest : JavaPlugin() {
+
+    private val playerDataManager = PlayerDataManager(this)
+
     override fun onEnable() {
-        // Plugin startup logic
-        println("TEST")
+        playerDataManager.init()
     }
 
     override fun onDisable() {
-        // Plugin shutdown logic
+        // TODO: Save playerdata
     }
 }

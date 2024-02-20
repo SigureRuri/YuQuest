@@ -21,7 +21,6 @@ class YamlPlayerDataManipulator(private val directory: File) : PersistentPlayerD
     }
 
     override fun exists(uuid: UUID): Boolean {
-        if ()
         TODO("Not yet implemented")
     }
 }

@@ -7,10 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class YuQuest : JavaPlugin() {
 
-    private val playerDataManager = PlayerDataManager(this)
+    private lateinit var playerDataManager: PlayerDataManager
 
     override fun onEnable() {
-        playerDataManager.init()
+        playerDataManager = PlayerDataManager(this)
     }
 
     override fun onDisable() {

@@ -1,6 +1,7 @@
 package com.github.sigureruri.yuquest.playerdata.bukkit
 
 import com.github.sigureruri.yuquest.YuQuest
+import com.github.sigureruri.yuquest.playerdata.PlayerDataManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -9,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.event.server.PluginEnableEvent
 
-class PlayerDataListener : Listener {
+class PlayerDataListener(private val playerDataManager: PlayerDataManager) : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onJoin(event: PlayerJoinEvent) {
         // TODO: Load playerdata

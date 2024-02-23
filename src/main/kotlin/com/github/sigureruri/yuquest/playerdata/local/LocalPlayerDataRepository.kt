@@ -2,7 +2,7 @@ package com.github.sigureruri.yuquest.playerdata.local
 
 import java.util.UUID
 
-class LocalPlayerDataHolder {
+class LocalPlayerDataRepository {
     // keyのuuidと、valueに含まれるYuPlayerDataのuuidは同一であることをこのクラスをもって保証する
     private val playerDataMap = mutableMapOf<UUID, YuPlayerData>()
 
@@ -17,14 +17,7 @@ class LocalPlayerDataHolder {
         playerDataMap.remove(uuid)
     }
 
-    fun putPlayerData(uuid: UUID, playerData: YuPlayerData) {
-        playerDataMap[uuid] = playerData
-    }
-
-    fun createNewPlayerData(uuid: UUID): YuPlayerData {
-        if (playerDataMap.contains(uuid)) throw IllegalStateException("There is already $uuid`s playerdata")
-        val newPlayerData = YuPlayerData(uuid)
-        playerDataMap[uuid] = newPlayerData
-        return newPlayerData
+    fun putPlayerData(playerData: YuPlayerData) {
+        playerDataMap[playerData.uuid] = playerData
     }
 }

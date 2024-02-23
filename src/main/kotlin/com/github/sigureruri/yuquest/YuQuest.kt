@@ -1,8 +1,6 @@
 package com.github.sigureruri.yuquest
 
 import com.github.sigureruri.yuquest.playerdata.PlayerDataManager
-import com.github.sigureruri.yuquest.playerdata.local.LocalPlayerDataHolder
-import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class YuQuest : JavaPlugin() {

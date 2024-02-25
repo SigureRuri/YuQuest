@@ -1,14 +1,18 @@
 package com.github.sigureruri.yuquest
 
-import com.github.sigureruri.yuquest.playerdata.PlayerDataManager
+import com.github.sigureruri.yuquest.playerdata.PlayerDataAccessor
+import com.github.sigureruri.yuquest.playerdata.PlayerDataOperator
 import org.bukkit.plugin.java.JavaPlugin
 
 class YuQuest : JavaPlugin() {
 
-    private lateinit var playerDataManager: PlayerDataManager
+    private lateinit var playerDataOperator: PlayerDataOperator
+
+    val playerDataAccessor: PlayerDataAccessor
+        get() = playerDataOperator
 
     override fun onEnable() {
-        playerDataManager = PlayerDataManager(this)
+        playerDataOperator = PlayerDataOperator(this)
     }
 
     override fun onDisable() {

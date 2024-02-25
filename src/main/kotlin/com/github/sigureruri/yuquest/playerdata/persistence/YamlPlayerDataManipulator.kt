@@ -1,26 +1,29 @@
 package com.github.sigureruri.yuquest.playerdata.persistence
 
+import com.github.sigureruri.yuquest.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
 import java.io.File
 import java.nio.file.Path
 import java.util.*
 
-class YamlPlayerDataManipulator(private val directory: File) : PersistentPlayerDataManipulator {
+class YamlPlayerDataManipulator(private val directory: File) : PersistentDataManipulator<UUID, YuPlayerData> {
     init {
         if (!directory.isDirectory) throw IllegalArgumentException("playerDataDirectory must be directory")
     }
 
     constructor(path: Path) : this(path.toFile())
 
-    override fun save(playerData: YuPlayerData) {
+    constructor(path: String) : this(File(path))
 
-    }
-
-    override fun load(uuid: UUID): YuPlayerData {
+    override fun save(data: YuPlayerData) {
         TODO("Not yet implemented")
     }
 
-    override fun exists(uuid: UUID): Boolean {
+    override fun load(key: UUID): YuPlayerData {
+        TODO("Not yet implemented")
+    }
+
+    override fun exists(key: UUID): Boolean {
         TODO("Not yet implemented")
     }
 }

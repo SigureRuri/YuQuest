@@ -1,11 +1,10 @@
 package com.github.sigureruri.yuquest.playerdata.bukkit
 
-import com.github.sigureruri.yuquest.YuQuest
-import com.github.sigureruri.yuquest.playerdata.PlayerDataManager
+import com.github.sigureruri.yuquest.playerdata.PlayerDataOperator
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
-import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -13,36 +12,87 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.event.server.PluginEnableEvent
+import java.util.logging.Logger
+import kotlin.math.log
 
-class PlayerDataListener(private val dataManager: PlayerDataManager) : Listener {
+class PlayerDataListener(private val operator: PlayerDataOperator, private val logger: Logger) : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
-    fun onJoin(event: PlayerJoinEvent) {
-        val playerUuid = event.player.uniqueId
+    fun onPlayerJoin(event: PlayerJoinEvent) {
+        val player = event.player
+        val uuid = player.uniqueId
 
         try {
-            if (dataManager.canLoad(playerUuid)) {
-                dataManager.load(playerUuid)
+            if (operator.canLoad(uuid)) {
+                if (operator.existsInLocalRepository(uuid)) {
+                    logger.warning("Playerdata of $uuid has already been created")
+                } else {
+                    operator.load(uuid)
+                }
             } else {
-                dataManager.createNew(playerUuid)
+                operator.createNew(uuid)
             }
-        } catch (e: Exception) {
-            Bukkit.getLogger().warning("An error was occurred when loading YuQuest's playerdata.")
+        } catch (e: Throwable) {
+            logger.warning("Failed to load playerdata of $uuid")
             e.printStackTrace()
-            event.player.kick(
-                    Component.text("[YuQuest] An error was occurred when loading playerdata.", NamedTextColor.RED)
-                            .append(Component.text("Please notice to server administrator", NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
-            )
+
+            player.kick(generateErrorMsgCausedByLoadingProcess(player))
         }
-
-
-        // TODO: LocalPlayerDataRepositoryは少なくとも、オンライン中のプレイヤーについてプレイヤーデータの存在を保証*してほしい *
     }
 
-    // 本来onQuitはなくてもいいが、サーバを長期的に起動している場合にオフラインのプレイヤーの分も保存し続けることを防ぐ
     @EventHandler(priority = EventPriority.MONITOR)
-    fun onQuit(event: PlayerQuitEvent) {
-        val playerUuid = event.player.uniqueId
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+        val player = event.player
+        val uuid = player.uniqueId
 
-        // TODO: save and remove playerdata from LocalPlayerDataRepository
+        try {
+            operator.removeFromLocalRepository(uuid)
+            operator.save(uuid)
+        } catch (e: Throwable) {
+            logger.warning("Failed to save playerdata of $uuid")
+            e.printStackTrace()
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    fun onYuQuestEnable(event: PluginEnableEvent) {
+        event.plugin.server.onlinePlayers.forEach { player ->
+            val uuid = player.uniqueId
+
+            try {
+                if (operator.existsInLocalRepository(uuid)) {
+                    logger.warning("Playerdata of $uuid has already been created")
+                } else {
+                    operator.load(uuid)
+                }
+            } catch (e: Throwable) {
+                logger.warning("Failed to load playerdata of $uuid")
+                e.printStackTrace()
+
+                player.kick(generateErrorMsgCausedByLoadingProcess(player))
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    fun onYuQuestDisable(event: PluginDisableEvent) {
+        operator.getAllFromLocalRepository()
+            .map { it.uuid }
+            .forEach { uuid ->
+                try {
+                    operator.removeFromLocalRepository(uuid)
+                    operator.save(uuid)
+                } catch (e: Throwable) {
+                    logger.warning("Failed to save playerdata of $uuid")
+                    e.printStackTrace()
+                }
+            }
+    }
+
+    private fun generateErrorMsgCausedByLoadingProcess(player: Player): Component {
+        return Component.text("[YuQuest] An error was occurred while loading your player data.").color(NamedTextColor.RED)
+            .append(Component.newline())
+            .append(Component.text("Please inform the server administrator with the following information:").color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
+            .append(Component.newline())
+            .append(Component.text("uuid: ${player.uniqueId}, id: ${player.name}, first_join: ${player.hasPlayedBefore()}"))
     }
 }

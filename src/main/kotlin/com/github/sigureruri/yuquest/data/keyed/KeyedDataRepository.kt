@@ -17,7 +17,7 @@ class KeyedDataRepository<K, V : KeyedData<K>> {
 
     fun has(key: K) = dataMap.contains(key)
 
-    fun remove(key: K): Unit {
+    fun remove(key: K) {
         dataMap.remove(key)
     }
 

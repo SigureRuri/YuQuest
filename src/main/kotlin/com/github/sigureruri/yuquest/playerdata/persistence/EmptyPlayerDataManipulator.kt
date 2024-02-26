@@ -15,6 +15,6 @@ class EmptyPlayerDataManipulator : PersistentDataManipulator<UUID, YuPlayerData>
     }
 
     override fun exists(key: UUID): Boolean {
-        return false
+        return true
     }
 }

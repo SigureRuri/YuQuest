@@ -45,8 +45,8 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
         val uuid = player.uniqueId
 
         try {
-            operator.removeFromLocalRepository(uuid)
             operator.save(uuid)
+            operator.removeFromLocalRepository(uuid)
         } catch (e: Throwable) {
             logger.warning("Failed to save playerdata of $uuid")
             e.printStackTrace()
@@ -79,8 +79,8 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
             .map { it.uuid }
             .forEach { uuid ->
                 try {
-                    operator.removeFromLocalRepository(uuid)
                     operator.save(uuid)
+                    operator.removeFromLocalRepository(uuid)
                 } catch (e: Throwable) {
                     logger.warning("Failed to save playerdata of $uuid")
                     e.printStackTrace()

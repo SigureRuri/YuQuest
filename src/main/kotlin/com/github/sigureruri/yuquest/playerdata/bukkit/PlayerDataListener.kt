@@ -86,14 +86,25 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
     }
 
     private fun generateErrorMsgCausedByLoadingProcess(profile: PlayerProfile): Component {
-        return Component.text("[YuQuest] An error was occurred while loading your player data.")
-            .color(NamedTextColor.RED)
-            .append(Component.newline())
+        return Component.empty()
+            .append(
+                Component.text("[YuQuest] An error was occurred while loading your player data.")
+                    .color(NamedTextColor.RED)
+                    .decorate(TextDecoration.BOLD)
+            )
+            .appendNewline()
+            .appendNewline()
+            .appendNewline()
             .append(
                 Component.text("Please inform the server administrator with the following information:")
-                    .color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD)
+                    .color(NamedTextColor.WHITE)
+                    .decorate(TextDecoration.UNDERLINED)
             )
-            .append(Component.newline())
-            .append(Component.text("uuid: ${profile.id}, id: ${profile.name}"))
+            .appendNewline()
+            .appendNewline()
+            .append(
+                Component.text("uuid: ${profile.id}, id: ${profile.name}")
+                    .color(NamedTextColor.WHITE)
+            )
     }
 }

@@ -1,6 +1,6 @@
 package com.github.sigureruri.yuquest.playerdata
 
-import com.github.sigureruri.yuquest.persistence.PersistentDataManipulator
+import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.bukkit.PlayerDataListener
 import com.github.sigureruri.yuquest.playerdata.local.LocalPlayerDataRepository
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData

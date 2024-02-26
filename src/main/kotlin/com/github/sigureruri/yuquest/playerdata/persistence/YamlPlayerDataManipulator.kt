@@ -1,6 +1,6 @@
 package com.github.sigureruri.yuquest.playerdata.persistence
 
-import com.github.sigureruri.yuquest.persistence.PersistentDataManipulator
+import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
 import java.io.File
 import java.nio.file.Path

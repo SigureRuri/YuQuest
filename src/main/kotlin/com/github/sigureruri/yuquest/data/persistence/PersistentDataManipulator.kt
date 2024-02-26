@@ -1,4 +1,4 @@
-package com.github.sigureruri.yuquest.persistence
+package com.github.sigureruri.yuquest.data.persistence
 
 interface PersistentDataManipulator<K, V> {
     @Throws

@@ -15,4 +15,8 @@ abstract class Identified<K> {
     final override fun hashCode(): Int {
         return id?.hashCode() ?: 0
     }
+
+    override fun toString(): String {
+        return "Identified(id=$id)"
+    }
 }

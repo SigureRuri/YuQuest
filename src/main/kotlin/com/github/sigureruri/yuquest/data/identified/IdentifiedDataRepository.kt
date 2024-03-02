@@ -1,12 +1,12 @@
-package com.github.sigureruri.yuquest.data.keyed
+package com.github.sigureruri.yuquest.data.identified
 
 /**
- * 特定の[KeyedData]を、keyとvalueに分けて効率的にデータ探索をするクラス
+ * 特定の[Identified]を、keyとvalueに分けて効率的にデータ探索をするクラス
  *
  * @param K
  * @param V
  */
-class KeyedDataRepository<K, V : KeyedData<K>> {
+class IdentifiedDataRepository<K, V : Identified<K>> {
     private val dataMap = mutableMapOf<K, V>()
 
     operator fun get(key: K) = dataMap[key]
@@ -22,6 +22,6 @@ class KeyedDataRepository<K, V : KeyedData<K>> {
     }
 
     fun put(data: V) {
-        dataMap[data.key] = data
+        dataMap[data.id] = data
     }
 }

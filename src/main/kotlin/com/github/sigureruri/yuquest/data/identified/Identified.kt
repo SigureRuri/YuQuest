@@ -1,16 +1,18 @@
-package com.github.sigureruri.yuquest.data.keyed
+package com.github.sigureruri.yuquest.data.identified
 
-abstract class KeyedData<K>(val key: K) {
+abstract class Identified<K> {
+    abstract val id: K
+
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as KeyedData<*>
+        other as Identified<*>
 
-        return key == other.key
+        return id == other.id
     }
 
     final override fun hashCode(): Int {
-        return key?.hashCode() ?: 0
+        return id?.hashCode() ?: 0
     }
 }

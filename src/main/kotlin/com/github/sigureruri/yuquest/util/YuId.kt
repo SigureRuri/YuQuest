@@ -1,6 +1,8 @@
 package com.github.sigureruri.yuquest.util
 
-data class YuId(val id: String) {
+import com.github.sigureruri.yuquest.data.identified.Identified
+
+class YuId(id: String) : Identified<String>(id) {
     init {
         require(id.matches(NAMING_RULE)) { "id must match $NAMING_RULE" }
     }

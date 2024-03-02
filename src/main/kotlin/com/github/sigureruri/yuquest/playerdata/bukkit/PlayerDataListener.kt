@@ -73,7 +73,7 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
     @EventHandler(priority = EventPriority.MONITOR)
     fun onYuQuestDisable(event: PluginDisableEvent) {
         operator.getAllFromLocalRepository()
-            .map { it.key }
+            .map { it.id }
             .forEach { uuid ->
                 try {
                     operator.save(uuid)

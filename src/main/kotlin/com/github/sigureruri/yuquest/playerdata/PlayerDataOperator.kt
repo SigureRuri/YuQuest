@@ -1,6 +1,6 @@
 package com.github.sigureruri.yuquest.playerdata
 
-import com.github.sigureruri.yuquest.data.keyed.KeyedDataRepository
+import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.bukkit.PlayerDataListener
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
 class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
-    private val localDataRepository = KeyedDataRepository<UUID, YuPlayerData>()
+    private val localDataRepository = IdentifiedDataRepository<UUID, YuPlayerData>()
 
     private val playerDataManipulator: PersistentDataManipulator<UUID, YuPlayerData>
 

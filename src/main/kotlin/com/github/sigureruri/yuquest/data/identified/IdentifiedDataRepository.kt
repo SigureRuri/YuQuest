@@ -9,18 +9,18 @@ package com.github.sigureruri.yuquest.data.identified
 class IdentifiedDataRepository<K, V : Identified<K>> {
     private val dataMap = mutableMapOf<K, V>()
 
-    operator fun get(key: K) = dataMap[key]
+    operator fun get(id: K) = dataMap[id]
 
     // toList() works as deep copy
     val values: List<V>
         get() = dataMap.values.toList()
 
-    fun has(key: K) = dataMap.contains(key)
+    fun has(id: K) = dataMap.contains(id)
 
     fun has(data: V) = dataMap.contains(data.id)
 
-    fun remove(key: K) {
-        dataMap.remove(key)
+    fun remove(id: K) {
+        dataMap.remove(id)
     }
 
     fun remove(data: V) {

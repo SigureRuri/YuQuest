@@ -2,7 +2,7 @@ package com.github.sigureruri.yuquest.util
 
 import com.github.sigureruri.yuquest.data.identified.Identified
 
-class YuId(id: String) : Identified<String>(id) {
+class YuId(override val id: String) : Identified<String>() {
     init {
         require(id.matches(NAMING_RULE)) { "id must match $NAMING_RULE" }
     }

@@ -17,8 +17,14 @@ class IdentifiedDataRepository<K, V : Identified<K>> {
 
     fun has(key: K) = dataMap.contains(key)
 
+    fun has(data: V) = dataMap.contains(data.id)
+
     fun remove(key: K) {
         dataMap.remove(key)
+    }
+
+    fun remove(data: V) {
+        dataMap.remove(data.id)
     }
 
     fun put(data: V) {

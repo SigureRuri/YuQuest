@@ -41,6 +41,10 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+compileKotlin {
+    kotlinOptions.jvmTarget = targetJavaVersion
+}
+
 processResources {
     def props = [version: version]
     inputs.properties props

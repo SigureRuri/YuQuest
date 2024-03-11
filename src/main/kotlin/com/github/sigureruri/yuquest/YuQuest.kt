@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class YuQuest : JavaPlugin() {
 
     private lateinit var playerDataOperator: PlayerDataOperator
+        private set
 
     val playerDataAccessor: PlayerDataAccessor
         get() = playerDataOperator

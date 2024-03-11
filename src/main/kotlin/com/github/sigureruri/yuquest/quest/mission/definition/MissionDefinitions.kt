@@ -11,7 +11,7 @@ class MissionDefinitions {
 
     private val valueProviderRepository = IdentifiedDataRepository<YuId, MissionDefinition<*>>()
 
-    val definitions: List<MissionDefinition<*>>
+    val definitions: Set<MissionDefinition<*>>
         get() = valueProviderRepository.values
 
     fun withDefaultEffect(effect: DefaultMissionEffect): MissionDefinitions {

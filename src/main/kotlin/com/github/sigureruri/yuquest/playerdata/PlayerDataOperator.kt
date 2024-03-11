@@ -23,7 +23,7 @@ class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
 
     override fun getFromLocalRepository(uuid: UUID): YuPlayerData? = localDataRepository.get(uuid)
 
-    override fun getAllFromLocalRepository(): List<YuPlayerData> = localDataRepository.values
+    override fun getAllFromLocalRepository(): Set<YuPlayerData> = localDataRepository.values
 
     fun existsInLocalRepository(uuid: UUID) = localDataRepository.has(uuid)
 

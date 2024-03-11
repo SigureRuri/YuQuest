@@ -14,7 +14,7 @@ class QuestManager {
 
     private val tracker = QuestTracker()
 
-    val trackingQuests: List<Quest>
+    val trackingQuests: Set<Quest>
         get() = tracker.trackingQuests
 
     fun start(definition: QuestDefinition) {

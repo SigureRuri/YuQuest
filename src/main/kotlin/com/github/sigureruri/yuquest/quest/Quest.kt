@@ -16,7 +16,7 @@ class Quest @Deprecated("Internal only") internal constructor(
 
     private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository()
 
-    val members: List<QuestMember>
+    val members: Set<QuestMember>
         get() = membersRepository.values
 
     var status = Status.NOT_STARTED_YET
@@ -29,7 +29,7 @@ class Quest @Deprecated("Internal only") internal constructor(
                 .forEach { put(it) }
         }
 
-    val missions: List<Mission<*>>
+    val missions: Set<Mission<*>>
         get() = missionsRepository.values
 
     fun start() {

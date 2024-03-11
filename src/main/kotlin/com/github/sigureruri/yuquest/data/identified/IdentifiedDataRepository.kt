@@ -11,9 +11,8 @@ class IdentifiedDataRepository<K, V : Identified<K>> {
 
     operator fun get(id: K) = dataMap[id]
 
-    // toList() works as deep copy
-    val values: List<V>
-        get() = dataMap.values.toList()
+    val values: Set<V>
+        get() = dataMap.values.toSet()
 
     fun has(id: K) = dataMap.contains(id)
 

@@ -6,7 +6,7 @@ import java.util.*
 class QuestTracker {
     private val trackingQuestsRepository = IdentifiedDataRepository<UUID, Quest>()
 
-    val trackingQuests: List<Quest>
+    val trackingQuests: Set<Quest>
         get() = trackingQuestsRepository.values
 
     fun startTracking(quest: Quest) {

@@ -1,6 +1,7 @@
 package com.github.sigureruri.yuquest.playerdata.bukkit
 
 import com.destroystokyo.paper.profile.PlayerProfile
+import com.github.sigureruri.yuquest.YuQuest
 import com.github.sigureruri.yuquest.playerdata.PlayerDataOperator
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -52,6 +53,8 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
 
     @EventHandler(priority = EventPriority.MONITOR)
     fun onYuQuestEnable(event: PluginEnableEvent) {
+        if (event.plugin !is YuQuest) return
+
         event.plugin.server.onlinePlayers.forEach { player ->
             val uuid = player.uniqueId
 
@@ -72,6 +75,8 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
 
     @EventHandler(priority = EventPriority.MONITOR)
     fun onYuQuestDisable(event: PluginDisableEvent) {
+        if (event.plugin !is YuQuest) return
+
         operator.getAllFromLocalRepository()
             .map { it.id }
             .forEach { uuid ->

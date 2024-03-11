@@ -1,18 +1,26 @@
 package com.github.sigureruri.yuquest.quest
 
+import com.github.sigureruri.yuquest.YuQuest
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
+import com.github.sigureruri.yuquest.quest.bukkit.QuestListener
 import com.github.sigureruri.yuquest.quest.mission.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.mission.Mission
 import com.github.sigureruri.yuquest.quest.mission.MissionType
 import com.github.sigureruri.yuquest.quest.persistence.YamlQuestDataManipulator
 import java.util.*
 
-class QuestManager {
+class QuestManager(plugin: YuQuest) {
     val resourceManager = QuestResourceManager()
 
     private val questDataManipulator: PersistentDataManipulator<UUID, Quest> = YamlQuestDataManipulator()
 
     private val tracker = QuestTracker()
+
+    init {
+        require(plugin.isEnabled)
+
+        plugin.server.pluginManager.registerEvents(QuestListener(this), plugin)
+    }
 
     val trackingQuests: Set<Quest>
         get() = tracker.trackingQuests

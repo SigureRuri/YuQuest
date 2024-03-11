@@ -20,11 +20,7 @@ class YuQuest : JavaPlugin() {
         INSTANCE = this
 
         playerDataOperator = PlayerDataOperator(this)
-        questManager = QuestManager()
-
-        questManager.resourceManager.getMissionTypes().forEach {
-            it.initializeAfterServerStarts()
-        }
+        questManager = QuestManager(this)
     }
 
     override fun onDisable() {

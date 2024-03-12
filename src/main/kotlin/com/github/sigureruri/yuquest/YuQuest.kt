@@ -23,10 +23,6 @@ class YuQuest : JavaPlugin() {
         questManager = QuestManager(this)
     }
 
-    override fun onDisable() {
-        // TODO: Save playerdata
-    }
-
     companion object {
         @JvmStatic
         lateinit var INSTANCE: YuQuest

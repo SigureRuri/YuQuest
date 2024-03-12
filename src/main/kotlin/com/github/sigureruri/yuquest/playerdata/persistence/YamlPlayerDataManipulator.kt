@@ -2,28 +2,37 @@ package com.github.sigureruri.yuquest.playerdata.persistence
 
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
+import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
-import java.nio.file.Path
 import java.util.*
 
-class YamlPlayerDataManipulator(private val directory: File) : PersistentDataManipulator<UUID, YuPlayerData> {
+class YamlPlayerDataManipulator(private val dataFolder: File) : PersistentDataManipulator<UUID, YuPlayerData> {
     init {
-        if (!directory.isDirectory) throw IllegalArgumentException("playerDataDirectory must be directory")
-    }
-
-    constructor(path: Path) : this(path.toFile())
-
-    constructor(path: String) : this(File(path))
-
-    override fun save(data: YuPlayerData) {
-        TODO("Not yet implemented")
+        dataFolder.mkdirs()
+        require(dataFolder.isDirectory) { "dataFolder must be directory" }
     }
 
     override fun load(key: UUID): YuPlayerData {
-        TODO("Not yet implemented")
+        val dataFile = File(dataFolder, "$key.yml")
+        val yamlConfig = YamlConfiguration.loadConfiguration(dataFile)
+        return YuPlayerData(key)
+    }
+
+    override fun save(data: YuPlayerData) {
+        val dataFile = File(dataFolder, "${data.id}.yml")
+        if (!dataFile.exists() || dataFile.isDirectory) {
+            dataFile.parentFile.mkdirs()
+            dataFile.createNewFile()
+        }
+
+        val yamlConfig = YamlConfiguration()
+
+        yamlConfig.save(dataFile)
     }
 
     override fun exists(key: UUID): Boolean {
-        TODO("Not yet implemented")
+        val playerDataFile = File(dataFolder, "$key.yml")
+
+        return playerDataFile.exists()
     }
 }

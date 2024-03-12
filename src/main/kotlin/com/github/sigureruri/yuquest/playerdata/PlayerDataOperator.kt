@@ -4,8 +4,9 @@ import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.bukkit.PlayerDataListener
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
-import com.github.sigureruri.yuquest.playerdata.persistence.EmptyPlayerDataManipulator
+import com.github.sigureruri.yuquest.playerdata.persistence.YamlPlayerDataManipulator
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 import java.util.*
 
 class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
@@ -16,8 +17,7 @@ class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
     init {
         require(plugin.isEnabled)
 
-        // TODO: Replace EmptyPlayerDataManipulator with YamlPlayerDataManipulator
-        playerDataManipulator = EmptyPlayerDataManipulator()
+        playerDataManipulator = YamlPlayerDataManipulator(File(plugin.dataFolder, "playerdata"))
         plugin.server.pluginManager.registerEvents(PlayerDataListener(this, plugin.logger), plugin)
     }
 

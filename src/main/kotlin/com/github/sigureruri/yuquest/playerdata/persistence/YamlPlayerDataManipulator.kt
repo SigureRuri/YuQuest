@@ -30,9 +30,32 @@ class YamlPlayerDataManipulator(private val dataFolder: File) : PersistentDataMa
         yamlConfig.save(dataFile)
     }
 
+    override fun remove(key: UUID): Boolean {
+        val dataFile = File(dataFolder, "${key}.yml")
+        if (!dataFile.exists() || dataFile.isDirectory) return false
+
+        return dataFile.delete()
+    }
+
     override fun exists(key: UUID): Boolean {
         val playerDataFile = File(dataFolder, "$key.yml")
 
         return playerDataFile.exists()
+    }
+
+    override fun getLoadableKeys(): Set<UUID> {
+        return setOf(
+            *dataFolder.listFiles { dir, name ->
+                dir.isFile && name.endsWith(".yml")
+            }.mapNotNull {
+                val nameWithoutExtension = it.name.removeSuffix(".yml")
+
+                try {
+                    UUID.fromString(nameWithoutExtension)
+                } catch (e: IllegalArgumentException) {
+                    return@mapNotNull null
+                }
+            }.toTypedArray()
+        )
     }
 }

@@ -1,6 +1,7 @@
-package com.github.sigureruri.yuquest.quest.mission.dependency
+package com.github.sigureruri.yuquest.quest.util
 
 import com.github.sigureruri.yuquest.quest.Quest
+import com.github.sigureruri.yuquest.quest.definition.MissionDependency
 
 object MissionDependencyInterpreter {
     fun fulfillConditions(quest: Quest, dependency: MissionDependency): Boolean {

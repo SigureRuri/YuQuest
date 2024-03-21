@@ -1,7 +1,7 @@
-package com.github.sigureruri.yuquest.quest
+package com.github.sigureruri.yuquest.quest.definition
 
 import com.github.sigureruri.yuquest.data.identified.Identified
-import com.github.sigureruri.yuquest.quest.mission.definition.MissionDefinitions
+import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.util.YuId
 import net.kyori.adventure.text.Component
 

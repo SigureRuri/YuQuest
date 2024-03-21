@@ -2,11 +2,10 @@ package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.YuQuest
 import com.github.sigureruri.yuquest.quest.bukkit.QuestListener
-import com.github.sigureruri.yuquest.quest.mission.MemberRelatedEvent
-import com.github.sigureruri.yuquest.quest.mission.Mission
-import com.github.sigureruri.yuquest.quest.mission.MissionType
+import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
+import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
+import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.quest.persistence.QuestPersistenceOperator
-import com.github.sigureruri.yuquest.quest.repository.QuestResourceRepository
 
 class QuestManager(plugin: YuQuest) {
     val resourceManager = QuestResourceRepository()

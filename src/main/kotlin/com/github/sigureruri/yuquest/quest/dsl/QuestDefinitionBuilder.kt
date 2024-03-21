@@ -1,6 +1,6 @@
 package com.github.sigureruri.yuquest.quest.dsl
 
-import com.github.sigureruri.yuquest.quest.QuestDefinition
+import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
 import com.github.sigureruri.yuquest.util.YuId
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty

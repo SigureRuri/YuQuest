@@ -1,8 +1,8 @@
-package com.github.sigureruri.yuquest.quest.repository
+package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
-import com.github.sigureruri.yuquest.quest.QuestDefinition
-import com.github.sigureruri.yuquest.quest.mission.MissionType
+import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
+import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.util.YuId
 
 class QuestResourceRepository {

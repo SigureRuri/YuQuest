@@ -1,4 +1,4 @@
-package com.github.sigureruri.yuquest.quest.mission
+package com.github.sigureruri.yuquest.quest.missiontype
 
 import com.github.sigureruri.yuquest.data.identified.Identified
 import com.github.sigureruri.yuquest.util.YuId

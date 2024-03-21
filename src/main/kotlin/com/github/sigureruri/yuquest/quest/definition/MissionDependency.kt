@@ -1,4 +1,4 @@
-package com.github.sigureruri.yuquest.quest.mission.dependency
+package com.github.sigureruri.yuquest.quest.definition
 
 import com.github.sigureruri.yuquest.util.YuId
 

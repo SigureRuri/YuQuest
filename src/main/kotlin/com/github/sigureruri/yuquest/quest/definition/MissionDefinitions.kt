@@ -1,7 +1,7 @@
-package com.github.sigureruri.yuquest.quest.mission.definition
+package com.github.sigureruri.yuquest.quest.definition
 
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
-import com.github.sigureruri.yuquest.quest.mission.MemberRelatedEvent
+import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.util.YuId
 
 class MissionDefinitions {

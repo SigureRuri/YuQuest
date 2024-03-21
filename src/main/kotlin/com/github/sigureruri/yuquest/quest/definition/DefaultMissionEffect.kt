@@ -1,8 +1,8 @@
-package com.github.sigureruri.yuquest.quest.mission.definition
+package com.github.sigureruri.yuquest.quest.definition
 
 import com.github.sigureruri.yuquest.quest.Quest
-import com.github.sigureruri.yuquest.quest.mission.MemberRelatedEvent
-import com.github.sigureruri.yuquest.quest.mission.Mission
+import com.github.sigureruri.yuquest.quest.Mission
+import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 
 data class DefaultMissionEffect(
     val filter: (Mission<*>, MemberRelatedEvent) -> Boolean = { _, _ -> true },

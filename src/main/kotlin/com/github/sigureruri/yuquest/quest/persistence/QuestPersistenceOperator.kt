@@ -2,7 +2,7 @@ package com.github.sigureruri.yuquest.quest.persistence
 
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.Quest
-import com.github.sigureruri.yuquest.quest.repository.QuestResourceRepository
+import com.github.sigureruri.yuquest.quest.QuestResourceRepository
 import com.github.sigureruri.yuquest.quest.QuestTracker
 import com.github.sigureruri.yuquest.quest.bukkit.QuestLoader
 import org.bukkit.plugin.java.JavaPlugin

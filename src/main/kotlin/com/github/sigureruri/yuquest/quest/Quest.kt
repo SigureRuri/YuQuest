@@ -2,8 +2,8 @@ package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.data.identified.Identified
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
-import com.github.sigureruri.yuquest.quest.mission.Mission
-import com.github.sigureruri.yuquest.quest.mission.dependency.MissionDependencyInterpreter
+import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
+import com.github.sigureruri.yuquest.quest.util.MissionDependencyInterpreter
 import com.github.sigureruri.yuquest.util.YuId
 import java.util.*
 

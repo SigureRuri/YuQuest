@@ -1,8 +1,8 @@
 package com.github.sigureruri.yuquest.quest.dsl
 
-import com.github.sigureruri.yuquest.quest.mission.MemberRelatedEvent
-import com.github.sigureruri.yuquest.quest.mission.Mission
-import com.github.sigureruri.yuquest.quest.mission.definition.DefaultMissionEffect
+import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
+import com.github.sigureruri.yuquest.quest.Mission
+import com.github.sigureruri.yuquest.quest.definition.DefaultMissionEffect
 
 class DefaultMissionEffectDSL {
     private var filter: MemberRelatedEvent.() -> Boolean = { true }

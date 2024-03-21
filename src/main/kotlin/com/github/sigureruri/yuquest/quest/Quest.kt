@@ -11,26 +11,42 @@ class Quest @Deprecated("Internal only") internal constructor(
     override val id: UUID,
     private val tracker: QuestTracker,
     private val questDefinition: QuestDefinition,
+    status: Status = Status.NOT_STARTED_YET,
+    private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository(),
+    defaultMissionValues: Map<YuId, MissionDefaultValue> = mapOf()
 ) : Identified<UUID>() {
     constructor(tracker: QuestTracker, definition: QuestDefinition) : this(UUID.randomUUID(), tracker, definition)
-
-    private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository()
 
     val members: Set<QuestMember>
         get() = membersRepository.values
 
-    var status = Status.NOT_STARTED_YET
+    var status = status
         private set
 
     private val missionsRepository: IdentifiedDataRepository<YuId, Mission<*>> =
         IdentifiedDataRepository<YuId, Mission<*>>().apply {
             questDefinition.missionDefinitions.definitions
-                .map { Mission(this@Quest, it, questDefinition.missionDefinitions.defaultEffect) }
-                .forEach { put(it) }
+                .map {
+                    if (defaultMissionValues.contains(it.id)) {
+                        val defaultValue = defaultMissionValues[it.id]!!
+                        Mission(this@Quest, it, questDefinition.missionDefinitions.defaultEffect, defaultValue.status, defaultValue.currentCount)
+                    } else {
+                        Mission(this@Quest, it, questDefinition.missionDefinitions.defaultEffect)
+                    }
+                }.forEach { put(it) }
         }
 
     val missions: Set<Mission<*>>
         get() = missionsRepository.values
+
+    fun requestToStartTracking(): Boolean {
+        if (tracker.trackingQuests.contains(this)) {
+            return false
+        } else {
+            tracker.startTracking(this)
+            return true
+        }
+    }
 
     fun start() {
         requireNotStarted()
@@ -87,7 +103,6 @@ class Quest @Deprecated("Internal only") internal constructor(
     private fun requireAllMissionsAreFinished() =
         require(missionsRepository.values.all { it.status.isEnded() })
 
-
     enum class Status {
         NOT_STARTED_YET,
         STARTED,
@@ -99,4 +114,9 @@ class Quest @Deprecated("Internal only") internal constructor(
             FORCIBLY_ENDED, COMPLETED -> true
         }
     }
+
+    internal data class MissionDefaultValue(
+        val status: Mission.Status,
+        val currentCount: Int
+    )
 }

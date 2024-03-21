@@ -12,7 +12,9 @@ import kotlin.math.max
 class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal constructor(
     val quest: Quest,
     private val missionDefinition: MissionDefinition<T>,
-    private val defaultEffect: DefaultMissionEffect
+    private val defaultEffect: DefaultMissionEffect,
+    status: Status = Status.NOT_STARTED_YET,
+    count: Int = 0
 ) : Identified<YuId>() {
     override val id: YuId = missionDefinition.id
 
@@ -22,11 +24,11 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
 
     val requiredCountToFinish: Int = missionDefinition.requiredCountToFinish
 
-    var status: Status = Status.NOT_STARTED_YET
+    var status: Status = status
         private set
 
     // positive int instead of using UInt
-    var count = 0
+    var count = count
         private set(value) {
             field = max(0, value)
         }

@@ -4,6 +4,7 @@ import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.*
 import com.github.sigureruri.yuquest.quest.mission.Mission
+import com.github.sigureruri.yuquest.quest.repository.QuestResourceRepository
 import com.github.sigureruri.yuquest.util.YuId
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
@@ -12,7 +13,7 @@ import java.util.*
 
 private typealias MissionDefaultValue = Quest.MissionDefaultValue
 
-class YamlQuestDataManipulator(private val dataFolder: File, private val resourceManager: QuestResourceManager, private val tracker: QuestTracker) : PersistentDataManipulator<UUID, Quest> {
+class YamlQuestDataManipulator(private val dataFolder: File, private val resourceManager: QuestResourceRepository, private val tracker: QuestTracker) : PersistentDataManipulator<UUID, Quest> {
     init {
         dataFolder.mkdirs()
         require(dataFolder.isDirectory) { "dataFolder must be directory" }

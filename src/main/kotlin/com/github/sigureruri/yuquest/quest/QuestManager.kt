@@ -6,9 +6,10 @@ import com.github.sigureruri.yuquest.quest.mission.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.mission.Mission
 import com.github.sigureruri.yuquest.quest.mission.MissionType
 import com.github.sigureruri.yuquest.quest.persistence.QuestPersistenceOperator
+import com.github.sigureruri.yuquest.quest.repository.QuestResourceRepository
 
 class QuestManager(plugin: YuQuest) {
-    val resourceManager = QuestResourceManager()
+    val resourceManager = QuestResourceRepository()
 
     private val tracker = QuestTracker()
 

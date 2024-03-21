@@ -1,10 +1,11 @@
-package com.github.sigureruri.yuquest.quest
+package com.github.sigureruri.yuquest.quest.repository
 
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
+import com.github.sigureruri.yuquest.quest.QuestDefinition
 import com.github.sigureruri.yuquest.quest.mission.MissionType
 import com.github.sigureruri.yuquest.util.YuId
 
-class QuestResourceManager {
+class QuestResourceRepository {
     private val questDefinitionRepository = IdentifiedDataRepository<YuId, QuestDefinition>()
 
     private val missionTypeRepository = IdentifiedDataRepository<YuId, MissionType<*>>()

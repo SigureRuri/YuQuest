@@ -2,7 +2,7 @@ package com.github.sigureruri.yuquest.quest.persistence
 
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.Quest
-import com.github.sigureruri.yuquest.quest.QuestResourceManager
+import com.github.sigureruri.yuquest.quest.repository.QuestResourceRepository
 import com.github.sigureruri.yuquest.quest.QuestTracker
 import com.github.sigureruri.yuquest.quest.bukkit.QuestLoader
 import org.bukkit.plugin.java.JavaPlugin
@@ -11,7 +11,7 @@ import java.util.*
 
 class QuestPersistenceOperator(
     private val plugin: JavaPlugin,
-    private val resources: QuestResourceManager,
+    private val resources: QuestResourceRepository,
     private val tracker: QuestTracker
 ) {
 

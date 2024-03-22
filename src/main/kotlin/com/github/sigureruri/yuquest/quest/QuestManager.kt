@@ -1,7 +1,7 @@
 package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.YuQuest
-import com.github.sigureruri.yuquest.quest.bukkit.QuestListener
+import com.github.sigureruri.yuquest.quest.bukkit.MissionTypeInitializer
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
@@ -17,7 +17,7 @@ class QuestManager(plugin: YuQuest) {
     init {
         require(plugin.isEnabled)
 
-        plugin.server.pluginManager.registerEvents(QuestListener(this), plugin)
+        plugin.server.pluginManager.registerEvents(MissionTypeInitializer(this), plugin)
     }
 
     val trackingQuests: Set<Quest>

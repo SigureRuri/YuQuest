@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.server.PluginEnableEvent
 
-class QuestListener(private val questManager: QuestManager) : Listener {
+class MissionTypeInitializer(private val questManager: QuestManager) : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onYuQuestEnable(event: PluginEnableEvent) {
         if (event.plugin !is YuQuest) return

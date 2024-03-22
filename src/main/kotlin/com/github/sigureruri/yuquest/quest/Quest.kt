@@ -10,7 +10,7 @@ import java.util.*
 class Quest @Deprecated("Internal only") internal constructor(
     override val id: UUID,
     private val tracker: QuestTracker,
-    private val questDefinition: QuestDefinition,
+    val questDefinition: QuestDefinition,
     status: Status = Status.NOT_STARTED_YET,
     private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository(),
     defaultMissionValues: Map<YuId, MissionDefaultValue> = mapOf()

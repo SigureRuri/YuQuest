@@ -10,7 +10,7 @@ import java.util.*
 class Quest @Deprecated("Internal only") internal constructor(
     override val id: UUID,
     private val tracker: QuestTracker,
-    val questDefinition: QuestDefinition,
+    val definition: QuestDefinition,
     status: Status = Status.NOT_STARTED_YET,
     private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository(),
     defaultMissionValues: Map<YuId, MissionDefaultValue> = mapOf()
@@ -25,13 +25,13 @@ class Quest @Deprecated("Internal only") internal constructor(
 
     private val missionsRepository: IdentifiedDataRepository<YuId, Mission<*>> =
         IdentifiedDataRepository<YuId, Mission<*>>().apply {
-            questDefinition.missionDefinitions.definitions
+            definition.missionDefinitions.definitions
                 .map {
                     if (defaultMissionValues.contains(it.id)) {
                         val defaultValue = defaultMissionValues[it.id]!!
-                        Mission(this@Quest, it, questDefinition.missionDefinitions.defaultEffect, defaultValue.status, defaultValue.currentCount)
+                        Mission(this@Quest, it, definition.missionDefinitions.defaultEffect, defaultValue.status, defaultValue.currentCount)
                     } else {
-                        Mission(this@Quest, it, questDefinition.missionDefinitions.defaultEffect)
+                        Mission(this@Quest, it, definition.missionDefinitions.defaultEffect)
                     }
                 }.forEach { put(it) }
         }
@@ -60,7 +60,7 @@ class Quest @Deprecated("Internal only") internal constructor(
 
         tracker.startTracking(this)
 
-        questDefinition.start(this)
+        definition.start(this)
     }
 
     fun end() {
@@ -75,7 +75,7 @@ class Quest @Deprecated("Internal only") internal constructor(
 
         tracker.endTracking(this)
 
-        questDefinition.end(this)
+        definition.end(this)
     }
 
     fun complete() {
@@ -85,7 +85,7 @@ class Quest @Deprecated("Internal only") internal constructor(
 
         tracker.endTracking(this)
 
-        questDefinition.complete(this)
+        definition.complete(this)
     }
 
     fun addMember(member: QuestMember) {

@@ -86,8 +86,6 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
     override fun getLoadableKeys(): Set<UUID> {
         return setOf(
             *dataFolder.listFiles { file ->
-                println("するよ")
-                println(file.isFile && file.extension == "yml")
                 file.isFile && file.extension == "yml"
             }.mapNotNull {
                 try {

@@ -1,8 +1,8 @@
 package com.github.sigureruri.yuquest.quest.dsl
 
+import com.github.sigureruri.yuquest.quest.definition.MissionDefinitions
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
-import com.github.sigureruri.yuquest.quest.definition.MissionDefinitions
 import com.github.sigureruri.yuquest.util.YuId
 
 class MissionDefinitionsDSL {

@@ -1,11 +1,11 @@
 package com.github.sigureruri.yuquest.quest.dsl
 
-import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.Mission
-import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.quest.definition.MissionDefinition
 import com.github.sigureruri.yuquest.quest.definition.MissionDependency
 import com.github.sigureruri.yuquest.quest.definition.asMissionDependency
+import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
+import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.util.YuId
 
 class MissionDSL<T : MemberRelatedEvent>(val id: YuId, val type: MissionType<T>) {

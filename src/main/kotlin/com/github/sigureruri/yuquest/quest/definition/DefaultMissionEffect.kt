@@ -1,7 +1,7 @@
 package com.github.sigureruri.yuquest.quest.definition
 
-import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.quest.Mission
+import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 
 data class DefaultMissionEffect(

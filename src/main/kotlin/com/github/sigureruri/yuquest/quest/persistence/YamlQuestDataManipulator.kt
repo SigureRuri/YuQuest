@@ -3,8 +3,6 @@ package com.github.sigureruri.yuquest.quest.persistence
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.*
-import com.github.sigureruri.yuquest.quest.Mission
-import com.github.sigureruri.yuquest.quest.QuestResourceRepository
 import com.github.sigureruri.yuquest.util.YuId
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration

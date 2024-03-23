@@ -1,8 +1,8 @@
 package com.github.sigureruri.yuquest.quest.definition
 
 import com.github.sigureruri.yuquest.data.identified.Identified
-import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.quest.Mission
+import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.util.YuId

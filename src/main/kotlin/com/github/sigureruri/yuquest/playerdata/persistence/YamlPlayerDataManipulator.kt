@@ -45,13 +45,11 @@ class YamlPlayerDataManipulator(private val dataFolder: File) : PersistentDataMa
 
     override fun getLoadableKeys(): Set<UUID> {
         return setOf(
-            *dataFolder.listFiles { dir, name ->
-                dir.isFile && name.endsWith(".yml")
+            *dataFolder.listFiles { file ->
+                file.isFile && file.extension == "yml"
             }.mapNotNull {
-                val nameWithoutExtension = it.name.removeSuffix(".yml")
-
                 try {
-                    UUID.fromString(nameWithoutExtension)
+                    UUID.fromString(it.nameWithoutExtension)
                 } catch (e: IllegalArgumentException) {
                     return@mapNotNull null
                 }

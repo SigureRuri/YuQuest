@@ -7,17 +7,22 @@ import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.quest.persistence.QuestPersistenceOperator
 
-class QuestManager(plugin: YuQuest) {
+class QuestManager(private val plugin: YuQuest) {
+    private var isEnabled = false
+
     val resourceManager = QuestResourceRepository()
 
     private val tracker = QuestTracker()
 
     private val persistenceOperator = QuestPersistenceOperator(plugin, resourceManager, tracker)
 
-    init {
+    fun enable() {
         require(plugin.isEnabled)
+        require(!isEnabled)
+        isEnabled = true
 
         plugin.server.pluginManager.registerEvents(MissionTypeInitializer(this), plugin)
+        persistenceOperator.enable()
     }
 
     val trackingQuests: Set<Quest>

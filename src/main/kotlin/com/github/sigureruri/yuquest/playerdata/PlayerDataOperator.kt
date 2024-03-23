@@ -10,14 +10,21 @@ import java.io.File
 import java.util.*
 
 class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
+    private var isEnabled = false
+
     private val localDataRepository = IdentifiedDataRepository<UUID, YuPlayerData>()
 
     private val playerDataManipulator: PersistentDataManipulator<UUID, YuPlayerData>
 
     init {
-        require(plugin.isEnabled)
-
         playerDataManipulator = YamlPlayerDataManipulator(File(plugin.dataFolder, "playerdata"))
+    }
+
+    fun enable() {
+        require(plugin.isEnabled)
+        require(!isEnabled)
+        isEnabled = true
+
         plugin.server.pluginManager.registerEvents(PlayerDataListener(this, plugin.logger), plugin)
     }
 

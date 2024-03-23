@@ -14,15 +14,17 @@ class QuestPersistenceOperator(
     private val resources: QuestResourceRepository,
     private val tracker: QuestTracker
 ) {
+    private var isEnabled = false
 
     private val dataFile = File(plugin.dataFolder, "quests")
 
-    private val questDataManipulator: PersistentDataManipulator<UUID, Quest>
+    private val questDataManipulator: PersistentDataManipulator<UUID, Quest> = YamlQuestDataManipulator(dataFile, resources, tracker)
 
-    init {
+    fun enable() {
         require(plugin.isEnabled)
+        require(!isEnabled)
+        isEnabled = true
 
-        questDataManipulator = YamlQuestDataManipulator(dataFile, resources, tracker)
         plugin.server.pluginManager.registerEvents(QuestLoader(this), plugin)
     }
 

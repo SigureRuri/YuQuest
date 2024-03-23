@@ -18,11 +18,14 @@ class YuQuest : JavaPlugin() {
 
     override fun onLoad() {
         INSTANCE = this
+
+        playerDataOperator = PlayerDataOperator(this)
+        questManager = QuestManager(this)
     }
 
     override fun onEnable() {
-        playerDataOperator = PlayerDataOperator(this)
-        questManager = QuestManager(this)
+        playerDataOperator.enable()
+        questManager.enable()
     }
 
     companion object {

@@ -31,18 +31,17 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
                 .forEach { put(it) }
         }
         val missionsSection = yamlConfig.getConfigurationSection("missions")!!
-        // TODO: 返り値のkeyがrootも含んだpathであるかどうか要検証
         val missionValueProviders: Map<YuId, MissionDefaultValue> = missionsSection.getValues(false)
             .map { YuId(it.key) to it.value as ConfigurationSection }
             .associate {
                 val missionStatus = Mission.Status.valueOf(it.second.getString("status")!!)
-                val currentCount = it.second.getInt("count")
+                val currentCount = it.second.getInt("currentCount")
                 it.first to MissionDefaultValue(missionStatus, currentCount)
             }
 
         val questDefinition = resourceManager.getQuestDefinition(questDefinitionId)
 
-        // TODO: PersistentDataManipulatorは永続化されたデータに(から)オブジェクトの保存(復元)
+        // TODO: PersistentDataManipulatorは永続化されたデータへ(から)のオブジェクトの保存(復元)
         // TODO: に責務をとどめるべきであって、当該オブジェクトのTracking状態まで管理するべきでない
         return Quest(key, tracker, questDefinition, questStatus, members, missionValueProviders)
     }
@@ -55,6 +54,20 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
         }
 
         val yamlConfig = YamlConfiguration()
+
+        with(yamlConfig) {
+            set("definition-id", data.definition.id.id)
+            set("status", data.status.toString())
+            set("members", data.members.map { it.id.toString() })
+            with(createSection("missions")) {
+                data.missions.forEach {
+                    with(createSection(it.id.id)) {
+                        set("status", it.status.toString())
+                        set("currentCount", it.count)
+                    }
+                }
+            }
+        }
 
         yamlConfig.save(dataFile)
     }
@@ -74,13 +87,13 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
 
     override fun getLoadableKeys(): Set<UUID> {
         return setOf(
-            *dataFolder.listFiles { dir, name ->
-                dir.isFile && name.endsWith(".yml")
+            *dataFolder.listFiles { file ->
+                println("するよ")
+                println(file.isFile && file.extension == "yml")
+                file.isFile && file.extension == "yml"
             }.mapNotNull {
-                val nameWithoutExtension = it.name.removeSuffix(".yml")
-
                 try {
-                    UUID.fromString(nameWithoutExtension)
+                    UUID.fromString(it.nameWithoutExtension)
                 } catch (e: IllegalArgumentException) {
                     return@mapNotNull null
                 }

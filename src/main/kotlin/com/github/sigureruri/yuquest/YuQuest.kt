@@ -16,9 +16,11 @@ class YuQuest : JavaPlugin() {
     lateinit var questManager: QuestManager
         private set
 
-    override fun onEnable() {
+    override fun onLoad() {
         INSTANCE = this
+    }
 
+    override fun onEnable() {
         playerDataOperator = PlayerDataOperator(this)
         questManager = QuestManager(this)
     }

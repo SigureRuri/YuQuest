@@ -5,7 +5,8 @@ import com.github.sigureruri.yuquest.quest.bukkit.MissionTypeInitializer
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
-import com.github.sigureruri.yuquest.quest.persistence.QuestPersistenceOperator
+import com.github.sigureruri.yuquest.quest.persistence.finalizedquesthistory.FinalizedHistoryPersistenceOperator
+import com.github.sigureruri.yuquest.quest.persistence.quest.QuestPersistenceOperator
 
 class QuestManager(private val plugin: YuQuest) {
     private var isEnabled = false
@@ -15,6 +16,8 @@ class QuestManager(private val plugin: YuQuest) {
     private val tracker = QuestTracker()
 
     private val persistenceOperator = QuestPersistenceOperator(plugin, resourceManager, tracker)
+
+    private val historyOperator = FinalizedHistoryPersistenceOperator(plugin)
 
     fun enable() {
         require(plugin.isEnabled)
@@ -29,12 +32,12 @@ class QuestManager(private val plugin: YuQuest) {
         get() = tracker.trackingQuests
 
     fun start(definition: QuestDefinition) {
-        val quest = Quest(tracker, definition)
+        val quest = Quest(tracker, historyOperator, definition)
         quest.start()
     }
 
     fun startWith(definition: QuestDefinition, members: Set<QuestMember>) {
-        val quest = Quest(tracker, definition)
+        val quest = Quest(tracker, historyOperator, definition)
 
         members.forEach { quest.addMember(it) }
 
@@ -53,7 +56,7 @@ class QuestManager(private val plugin: YuQuest) {
                 .filter { context.members.any { quest.members.contains(it) } }
                 .toList()
                 .forEach { mission ->
-                    mission.fire()
+                    mission.fire(context)
                 }
         }
     }

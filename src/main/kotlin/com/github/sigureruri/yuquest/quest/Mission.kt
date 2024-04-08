@@ -42,16 +42,16 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
         requireNotStarted()
         status = Status.STARTED
 
-        missionDefinition.start(quest, this)
-        defaultEffect.start(quest ,this)
+        missionDefinition.initializeOnce(this)
+        defaultEffect.initializeOnce(this)
     }
 
     fun end() {
         requireStarted()
         status = Status.FORCIBLY_ENDED
 
-        missionDefinition.end(quest, this)
-        defaultEffect.end(quest, this)
+        missionDefinition.finalizeOnce(this)
+        defaultEffect.finalizeOnce(this)
     }
 
     fun complete() {
@@ -59,17 +59,17 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
         requireFulfillingRequiredCount()
         status = Status.COMPLETED
 
-        missionDefinition.end(quest, this)
-        missionDefinition.complete(quest, this)
-        defaultEffect.end(quest, this)
-        defaultEffect.complete(quest, this)
+        missionDefinition.completeOnce(this)
+        missionDefinition.finalizeOnce(this)
+        defaultEffect.completeOnce(this)
+        defaultEffect.finalizeOnce(this)
     }
 
-    fun fire() {
+    fun fire(context: T) {
         requireStarted()
 
-        val result = missionDefinition.fire(quest, this) as? EventResult.Success ?: return
-        defaultEffect.fire(quest, this)
+        val result = missionDefinition.fire(this, context) as? EventResult.Success ?: return
+        defaultEffect.fire(this, context)
 
         count += result.count
 

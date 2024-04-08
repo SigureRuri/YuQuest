@@ -2,7 +2,7 @@ package com.github.sigureruri.yuquest.quest.definition
 
 import com.github.sigureruri.yuquest.data.identified.Identified
 import com.github.sigureruri.yuquest.quest.Mission
-import com.github.sigureruri.yuquest.quest.Quest
+import com.github.sigureruri.yuquest.quest.QuestMember
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.util.YuId
@@ -13,8 +13,11 @@ data class MissionDefinition<T : MemberRelatedEvent>(
     val dependency: MissionDependency,
     val requiredCountToFinish: Int,
     val filter: (Mission<T>, T) -> Boolean,
-    val start: (Quest, Mission<T>) -> Unit,
-    val end: (Quest, Mission<T>) -> Unit,
-    val complete: (Quest, Mission<T>) -> Unit,
-    val fire: (Quest, Mission<T>) -> Mission.EventResult
+    val initializeOnce: (Mission<T>) -> Unit,
+    val initializeForEachMember: (Mission<T>, QuestMember) -> Unit,
+    val finalizeOnce: (Mission<T>) -> Unit,
+    val finalizeForEachMember: (Mission<T>, QuestMember) -> Unit,
+    val completeOnce: (Mission<T>) -> Unit,
+    val completeForEachMember: (Mission<T>, QuestMember) -> Unit,
+    val fire: (Mission<T>, MemberRelatedEvent) -> Mission.EventResult
 ) : Identified<YuId>()

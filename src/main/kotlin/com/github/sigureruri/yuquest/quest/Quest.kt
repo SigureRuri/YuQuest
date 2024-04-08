@@ -3,6 +3,8 @@ package com.github.sigureruri.yuquest.quest
 import com.github.sigureruri.yuquest.data.identified.Identified
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
+import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistory
+import com.github.sigureruri.yuquest.quest.persistence.finalizedquesthistory.FinalizedHistoryWriter
 import com.github.sigureruri.yuquest.quest.util.MissionDependencyInterpreter
 import com.github.sigureruri.yuquest.util.YuId
 import java.util.*
@@ -10,12 +12,13 @@ import java.util.*
 class Quest @Deprecated("Internal only") internal constructor(
     override val id: UUID,
     private val tracker: QuestTracker,
+    private val historyWriter: FinalizedHistoryWriter,
     val definition: QuestDefinition,
     status: Status = Status.NOT_STARTED_YET,
     private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository(),
     defaultMissionValues: Map<YuId, MissionDefaultValue> = mapOf()
 ) : Identified<UUID>() {
-    constructor(tracker: QuestTracker, definition: QuestDefinition) : this(UUID.randomUUID(), tracker, definition)
+    constructor(tracker: QuestTracker, historyWriter: FinalizedHistoryWriter, definition: QuestDefinition) : this(UUID.randomUUID(), tracker, historyWriter, definition)
 
     val members: Set<QuestMember>
         get() = membersRepository.values
@@ -48,6 +51,10 @@ class Quest @Deprecated("Internal only") internal constructor(
         }
     }
 
+    fun isBeingTracked(): Boolean {
+        return tracker.trackingQuests.contains(this)
+    }
+
     fun start() {
         requireNotStarted()
         status = Status.STARTED
@@ -60,7 +67,7 @@ class Quest @Deprecated("Internal only") internal constructor(
 
         tracker.startTracking(this)
 
-        definition.start(this)
+        definition.initializeOnce(this)
     }
 
     fun end() {
@@ -75,7 +82,9 @@ class Quest @Deprecated("Internal only") internal constructor(
 
         tracker.endTracking(this)
 
-        definition.end(this)
+        definition.finalizeOnce(this)
+
+        historyWriter.writeFinalizedHistory(FinalizedHistory.of(this))
     }
 
     fun complete() {
@@ -85,7 +94,10 @@ class Quest @Deprecated("Internal only") internal constructor(
 
         tracker.endTracking(this)
 
-        definition.complete(this)
+        definition.completeOnce(this)
+        definition.finalizeOnce(this)
+
+        historyWriter.writeFinalizedHistory(FinalizedHistory.of(this))
     }
 
     fun addMember(member: QuestMember) {

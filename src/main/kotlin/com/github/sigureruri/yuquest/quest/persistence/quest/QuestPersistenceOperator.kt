@@ -1,4 +1,4 @@
-package com.github.sigureruri.yuquest.quest.persistence
+package com.github.sigureruri.yuquest.quest.persistence.quest
 
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.Quest

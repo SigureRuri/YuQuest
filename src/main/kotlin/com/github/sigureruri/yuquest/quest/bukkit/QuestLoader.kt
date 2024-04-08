@@ -1,7 +1,7 @@
 package com.github.sigureruri.yuquest.quest.bukkit
 
 import com.github.sigureruri.yuquest.YuQuest
-import com.github.sigureruri.yuquest.quest.persistence.QuestPersistenceOperator
+import com.github.sigureruri.yuquest.quest.persistence.quest.QuestPersistenceOperator
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener

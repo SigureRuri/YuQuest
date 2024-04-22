@@ -14,10 +14,10 @@ data class MissionDefinition<T : MemberRelatedEvent>(
     val requiredCountToFinish: Int,
     val filter: (Mission<T>, T) -> Boolean,
     val initializeOnce: (Mission<T>) -> Unit,
-    val initializeForEachMember: (Mission<T>, QuestMember) -> Unit,
+    val initializeForEachMember: (QuestMember) -> Unit,
     val finalizeOnce: (Mission<T>) -> Unit,
-    val finalizeForEachMember: (Mission<T>, QuestMember) -> Unit,
+    val finalizeForEachMember: (QuestMember) -> Unit,
     val completeOnce: (Mission<T>) -> Unit,
-    val completeForEachMember: (Mission<T>, QuestMember) -> Unit,
+    val completeForEachMember: (QuestMember) -> Unit,
     val fire: (Mission<T>, MemberRelatedEvent) -> Mission.EventResult
 ) : Identified<YuId>()

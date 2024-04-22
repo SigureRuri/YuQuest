@@ -1,4 +1,4 @@
-package com.github.sigureruri.yuquest.quest.persistence.finalizedquesthistory
+package com.github.sigureruri.yuquest.quest.persistence.finalizedhistory
 
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistory

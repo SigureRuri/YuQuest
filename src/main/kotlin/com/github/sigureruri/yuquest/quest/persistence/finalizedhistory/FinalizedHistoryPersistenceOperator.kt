@@ -1,5 +1,6 @@
-package com.github.sigureruri.yuquest.quest.persistence.finalizedquesthistory
+package com.github.sigureruri.yuquest.quest.persistence.finalizedhistory
 
+import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistory
 import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistoryAccessor
@@ -12,15 +13,21 @@ class FinalizedHistoryPersistenceOperator(private val plugin: JavaPlugin) : Fina
 
     private val historyManipulator: PersistentDataManipulator<UUID, FinalizedHistory> = YamlFinalizedHistoryDataManipulator(dataFile)
 
+    private val cache = IdentifiedDataRepository<UUID, FinalizedHistory>()
+
     override fun hasFinalizedHistory(uuid: UUID): Boolean {
-        return historyManipulator.exists(uuid)
+        return cache.has(uuid) || historyManipulator.exists(uuid)
     }
 
     override fun getFinalizedHistory(uuid: UUID): FinalizedHistory? {
-        return try {
-            historyManipulator.load(uuid)
-        } catch (_: Exception) {
-            return null
+        if (cache.has(uuid)) {
+            return cache[uuid]
+        } else {
+            return try {
+                historyManipulator.load(uuid)
+            } catch (_: Exception) {
+                return null
+            }
         }
     }
 

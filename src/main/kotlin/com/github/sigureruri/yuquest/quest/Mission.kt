@@ -1,6 +1,7 @@
 package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.data.identified.Identified
+import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
 import com.github.sigureruri.yuquest.quest.definition.DefaultMissionEffect
 import com.github.sigureruri.yuquest.quest.definition.MissionDefinition
 import com.github.sigureruri.yuquest.quest.definition.MissionDependency
@@ -12,18 +13,18 @@ import kotlin.math.max
 
 class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal constructor(
     val quest: Quest,
-    private val missionDefinition: MissionDefinition<T>,
+    val definition: MissionDefinition<T>,
     private val defaultEffect: DefaultMissionEffect,
     status: Status = Status.NOT_STARTED_YET,
     count: Int = 0
 ) : Identified<YuId>() {
-    override val id: YuId = missionDefinition.id
+    override val id: YuId = definition.id
 
-    val type: MissionType<T> = missionDefinition.type
+    val type: MissionType<T> = definition.type
 
-    val dependency: MissionDependency = missionDefinition.dependency
+    val dependency: MissionDependency = definition.dependency
 
-    val requiredCountToFinish: Int = missionDefinition.requiredCountToFinish
+    val requiredCountToFinish: Int = definition.requiredCountToFinish
 
     var status: Status = status
         private set
@@ -35,14 +36,14 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
         }
 
     fun filter(context: T): Boolean {
-        return defaultEffect.filter(this, context) && missionDefinition.filter(this, context)
+        return defaultEffect.filter(this, context) && definition.filter(this, context)
     }
 
     fun start() {
         requireNotStarted()
         status = Status.STARTED
 
-        missionDefinition.initializeOnce(this)
+        definition.initializeOnce(this)
         defaultEffect.initializeOnce(this)
     }
 
@@ -50,7 +51,7 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
         requireStarted()
         status = Status.FORCIBLY_ENDED
 
-        missionDefinition.finalizeOnce(this)
+        definition.finalizeOnce(this)
         defaultEffect.finalizeOnce(this)
     }
 
@@ -59,8 +60,8 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
         requireFulfillingRequiredCount()
         status = Status.COMPLETED
 
-        missionDefinition.completeOnce(this)
-        missionDefinition.finalizeOnce(this)
+        definition.completeOnce(this)
+        definition.finalizeOnce(this)
         defaultEffect.completeOnce(this)
         defaultEffect.finalizeOnce(this)
     }
@@ -68,7 +69,7 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
     fun fire(context: T) {
         requireStarted()
 
-        val result = missionDefinition.fire(this, context) as? EventResult.Success ?: return
+        val result = definition.fire(this, context) as? EventResult.Success ?: return
         defaultEffect.fire(this, context)
 
         count += result.count

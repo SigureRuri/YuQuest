@@ -1,17 +1,85 @@
 package com.github.sigureruri.yuquest.quest
 
-import com.github.sigureruri.yuquest.YuQuest
-import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistoryAccessor
+import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
+import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistory
+import com.github.sigureruri.yuquest.util.toQuestMember
 
 // TODO: このへんどうにかする
-class AdaptiveStatusUpdater(private val historyAccessor: FinalizedHistoryAccessor) {
-    fun tryToUpdate(target: QuestMember): Boolean {
-        val questManager = YuQuest.INSTANCE.questManager
-        val trackingQuests = questManager.trackingQuests
-        val playerData = YuQuest.INSTANCE.playerDataAccessor.getFromLocalRepository(target.id) ?: return false
+// TODO: trackingQuestsがIdentifiedDataRepositoryが返すと嬉しい
+/*
+ * Updateが必要なとき：
+ *
+ * クエスト側
+ * ・メンバー追加、削除時
+ * ・ミッション開始時
+ * ・ミッション終了時
+ * ・クエスト開始時
+ * ・クエスト終了時
+ *
+ * プレイヤー側
+ * ・ログイン時
+ *
+ *
+ * 対処：
+ * 1. 毎Tick回してもいいが、即時的な対応ができないだけでなく、負荷の面でも好ましくない。
+ */
+class AdaptiveStatusUpdater(private val questManager: QuestManager, private val target: YuPlayerData) {
+    private val historyAccessor = questManager.finalizedHistoryAccessor
 
-        playerData.questAdaptiveStatus.values.forEach {
-            val history = historyAccessor.getFinalizedHistory(it.id) ?: return@forEach
+    private val questMember = QuestMember(target.id)
+
+    fun update() {
+        val trackingQuests = questManager.trackingQuests
+
+        target.questAdaptiveStatus.values.forEach { questAdaptiveStatus ->
+            val missionAdaptiveStatus = questAdaptiveStatus.missionsAdaptiveStatus.values
+
+            // trackingQuestsにquestAdaptiveStatusが含まれていれば。
+            if (trackingQuests.any { it.id == questAdaptiveStatus.id }) {
+                val quest = trackingQuests.single { it.id == questAdaptiveStatus.id }
+
+                missionAdaptiveStatus.forEach {
+                    val mission = quest.missions.single { mission -> it.id == mission.id }
+                    val missionDefinition = mission.definition
+                    if (mission.status != Mission.Status.NOT_STARTED_YET && !it.initialized) {
+                        missionDefinition.initializeForEachMember(questMember)
+
+                        it.initialized = true
+                    }
+                    if (mission.status.isEnded() && !it.finalized) {
+                        missionDefinition.finalizeForEachMember(questMember)
+                        it.finalized = true
+                    }
+                    if (mission.status == Mission.Status.COMPLETED && !it.completed) {
+                        missionDefinition.completeForEachMember(questMember)
+                        it.completed = true
+                    }
+                }
+
+            // historyAccessorにquestAdaptiveStatusが含まれていたら。
+            // historyAccessorの存在は、それ自身がquestが終了ずみであることを意味する
+            } else if (historyAccessor.hasFinalizedHistory(questAdaptiveStatus.id)) {
+                val history = historyAccessor.getFinalizedHistory(questAdaptiveStatus.id)!!
+                val questDefinition = questManager.resourceManager.getQuestDefinition(history.definitionId)
+
+                missionAdaptiveStatus.forEach {
+                    val missionDefinition = questDefinition.missionDefinitions.definitions.single { definition -> definition.id == it.id }
+                    val missionStatus = history.missionStatus[it.id]!!
+
+                    if (!it.initialized) {
+                        missionDefinition.initializeForEachMember(questMember)
+                        it.initialized = true
+                    }
+                    if (!it.finalized) {
+                        missionDefinition.finalizeForEachMember(questMember)
+                        it.finalized = true
+                    }
+                    if (missionStatus == FinalizedHistory.MissionFinalizedStatus.COMPLETED && !it.completed) {
+                        missionDefinition.completeForEachMember(questMember)
+                        it.completed = true
+                    }
+                }
+            }
         }
     }
 }

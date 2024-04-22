@@ -4,7 +4,7 @@ import com.github.sigureruri.yuquest.data.identified.Identified
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
 import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistory
-import com.github.sigureruri.yuquest.quest.persistence.finalizedquesthistory.FinalizedHistoryWriter
+import com.github.sigureruri.yuquest.quest.persistence.finalizedhistory.FinalizedHistoryWriter
 import com.github.sigureruri.yuquest.quest.util.MissionDependencyInterpreter
 import com.github.sigureruri.yuquest.util.YuId
 import java.util.*

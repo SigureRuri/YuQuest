@@ -3,9 +3,10 @@ package com.github.sigureruri.yuquest.quest
 import com.github.sigureruri.yuquest.YuQuest
 import com.github.sigureruri.yuquest.quest.bukkit.MissionTypeInitializer
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
+import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistoryAccessor
 import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
-import com.github.sigureruri.yuquest.quest.persistence.finalizedquesthistory.FinalizedHistoryPersistenceOperator
+import com.github.sigureruri.yuquest.quest.persistence.finalizedhistory.FinalizedHistoryPersistenceOperator
 import com.github.sigureruri.yuquest.quest.persistence.quest.QuestPersistenceOperator
 
 class QuestManager(private val plugin: YuQuest) {
@@ -18,6 +19,9 @@ class QuestManager(private val plugin: YuQuest) {
     private val persistenceOperator = QuestPersistenceOperator(plugin, resourceManager, tracker)
 
     private val historyOperator = FinalizedHistoryPersistenceOperator(plugin)
+
+    val finalizedHistoryAccessor: FinalizedHistoryAccessor
+        get() = historyOperator
 
     fun enable() {
         require(plugin.isEnabled)

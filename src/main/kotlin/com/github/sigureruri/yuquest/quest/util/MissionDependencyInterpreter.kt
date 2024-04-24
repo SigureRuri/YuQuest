@@ -10,7 +10,7 @@ object MissionDependencyInterpreter {
         return when (dependency) {
             is MissionDependency.Nothing -> true
             is MissionDependency.Single -> {
-                missions.any { it.id == dependency.id && it.status.isEnded() }
+                missions.values.any { it.id == dependency.id && it.status.isEnded() }
             }
             is MissionDependency.And -> {
                 fulfillConditions(quest, dependency.first) && fulfillConditions(quest, dependency.second)

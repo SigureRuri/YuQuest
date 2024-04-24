@@ -1,6 +1,7 @@
 package com.github.sigureruri.yuquest.playerdata
 
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
+import com.github.sigureruri.yuquest.data.identified.MutableIdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.playerdata.bukkit.PlayerDataListener
 import com.github.sigureruri.yuquest.playerdata.local.YuPlayerData
@@ -12,7 +13,7 @@ import java.util.*
 class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
     private var isEnabled = false
 
-    private val localDataRepository = IdentifiedDataRepository<UUID, YuPlayerData>()
+    private val localDataRepository = MutableIdentifiedDataRepository<UUID, YuPlayerData>()
 
     private val playerDataManipulator: PersistentDataManipulator<UUID, YuPlayerData>
 
@@ -30,7 +31,7 @@ class PlayerDataOperator(private val plugin: JavaPlugin) : PlayerDataAccessor {
 
     override fun getFromLocalRepository(uuid: UUID): YuPlayerData? = localDataRepository.get(uuid)
 
-    override fun getAllFromLocalRepository(): Set<YuPlayerData> = localDataRepository.values
+    override fun getAllFromLocalRepository(): IdentifiedDataRepository<UUID, YuPlayerData> = localDataRepository
 
     fun existsInLocalRepository(uuid: UUID) = localDataRepository.has(uuid)
 

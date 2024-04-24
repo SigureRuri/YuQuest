@@ -78,10 +78,10 @@ class Mission<T : MemberRelatedEvent> @Deprecated("Internal only") internal cons
             complete()
 
             quest.missions.let { missions ->
-                if (missions.all { it.status.isEnded() }) {
+                if (missions.values.all { it.status.isEnded() }) {
                     quest.complete()
                 } else {
-                    missions
+                    missions.values
                         .filter { it.status == Status.NOT_STARTED_YET }
                         .forEach {
                             if (MissionDependencyInterpreter.fulfillConditions(quest, it.dependency)) {

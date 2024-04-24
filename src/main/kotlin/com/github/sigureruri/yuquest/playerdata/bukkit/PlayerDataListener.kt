@@ -77,7 +77,7 @@ class PlayerDataListener(private val operator: PlayerDataOperator, private val l
     fun onYuQuestDisable(event: PluginDisableEvent) {
         if (event.plugin !is YuQuest) return
 
-        operator.getAllFromLocalRepository()
+        operator.getAllFromLocalRepository().values
             .map { it.id }
             .forEach { uuid ->
                 try {

@@ -1,14 +1,15 @@
 package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
+import com.github.sigureruri.yuquest.data.identified.MutableIdentifiedDataRepository
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
 import com.github.sigureruri.yuquest.quest.missiontype.MissionType
 import com.github.sigureruri.yuquest.util.YuId
 
 class QuestResourceRepository {
-    private val questDefinitionRepository = IdentifiedDataRepository<YuId, QuestDefinition>()
+    private val questDefinitionRepository = MutableIdentifiedDataRepository<YuId, QuestDefinition>()
 
-    private val missionTypeRepository = IdentifiedDataRepository<YuId, MissionType<*>>()
+    private val missionTypeRepository = MutableIdentifiedDataRepository<YuId, MissionType<*>>()
 
     fun registerQuestDefinition(questDefinition: QuestDefinition) {
         if (questDefinitionRepository.has(questDefinition)) throw IllegalArgumentException("${questDefinition.id} has already been registered")

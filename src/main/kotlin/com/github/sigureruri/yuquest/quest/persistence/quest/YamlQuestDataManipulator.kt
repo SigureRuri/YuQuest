@@ -1,6 +1,7 @@
 package com.github.sigureruri.yuquest.quest.persistence.quest
 
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
+import com.github.sigureruri.yuquest.data.identified.MutableIdentifiedDataRepository
 import com.github.sigureruri.yuquest.data.persistence.PersistentDataManipulator
 import com.github.sigureruri.yuquest.quest.Mission
 import com.github.sigureruri.yuquest.quest.Quest
@@ -27,7 +28,7 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
 
         val questDefinitionId = YuId(yamlConfig.getString("definition-id")!!)
         val questStatus = Quest.Status.valueOf(yamlConfig.getString("status")!!)
-        val members = IdentifiedDataRepository<UUID, QuestMember>().apply {
+        val members = MutableIdentifiedDataRepository<UUID, QuestMember>().apply {
             yamlConfig.getStringList("members")
                 .map { QuestMember(UUID.fromString(it)) }
                 .forEach { put(it) }
@@ -60,7 +61,7 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
         with(yamlConfig) {
             set("definition-id", data.definition.id.id)
             set("status", data.status.toString())
-            set("members", data.members.map { it.id.toString() })
+            set("members", data.members.values.map { it.id.toString() })
             with(createSection("missions")) {
                 data.missions.forEach {
                     with(createSection(it.id.id)) {

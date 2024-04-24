@@ -24,7 +24,7 @@ data class FinalizedHistory(
             require(quest.status.isEnded()) { "quest must be ended" }
 
             val isCompleted = quest.status == Quest.Status.COMPLETED
-            val missionStatus = quest.missions.associate {
+            val missionStatus = quest.missions.values.associate {
                 val status = when (it.status) {
                     Mission.Status.COMPLETED -> MissionFinalizedStatus.COMPLETED
                     else -> MissionFinalizedStatus.NOT_COMPLETED

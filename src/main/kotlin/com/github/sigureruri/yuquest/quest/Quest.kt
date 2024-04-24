@@ -2,6 +2,7 @@ package com.github.sigureruri.yuquest.quest
 
 import com.github.sigureruri.yuquest.data.identified.Identified
 import com.github.sigureruri.yuquest.data.identified.IdentifiedDataRepository
+import com.github.sigureruri.yuquest.data.identified.MutableIdentifiedDataRepository
 import com.github.sigureruri.yuquest.quest.definition.QuestDefinition
 import com.github.sigureruri.yuquest.quest.finalizedhistory.FinalizedHistory
 import com.github.sigureruri.yuquest.quest.persistence.finalizedhistory.FinalizedHistoryWriter
@@ -15,20 +16,20 @@ class Quest @Deprecated("Internal only") internal constructor(
     private val historyWriter: FinalizedHistoryWriter,
     val definition: QuestDefinition,
     status: Status = Status.NOT_STARTED_YET,
-    private val membersRepository: IdentifiedDataRepository<UUID, QuestMember> = IdentifiedDataRepository(),
+    private val membersRepository: MutableIdentifiedDataRepository<UUID, QuestMember> = MutableIdentifiedDataRepository(),
     defaultMissionValues: Map<YuId, MissionDefaultValue> = mapOf()
 ) : Identified<UUID>() {
     constructor(tracker: QuestTracker, historyWriter: FinalizedHistoryWriter, definition: QuestDefinition) : this(UUID.randomUUID(), tracker, historyWriter, definition)
 
-    val members: Set<QuestMember>
-        get() = membersRepository.values
+    val members: IdentifiedDataRepository<UUID, QuestMember>
+        get() = membersRepository
 
     var status = status
         private set
 
     private val missionsRepository: IdentifiedDataRepository<YuId, Mission<*>> =
-        IdentifiedDataRepository<YuId, Mission<*>>().apply {
-            definition.missionDefinitions.definitions
+        MutableIdentifiedDataRepository<YuId, Mission<*>>().apply {
+            definition.missionDefinitions.definitions.values
                 .map {
                     if (defaultMissionValues.contains(it.id)) {
                         val defaultValue = defaultMissionValues[it.id]!!
@@ -36,14 +37,16 @@ class Quest @Deprecated("Internal only") internal constructor(
                     } else {
                         Mission(this@Quest, it, definition.missionDefinitions.defaultEffect)
                     }
-                }.forEach { put(it) }
+                }.forEach {
+                    put(it)
+                }
         }
 
-    val missions: Set<Mission<*>>
-        get() = missionsRepository.values
+    val missions: IdentifiedDataRepository<YuId, Mission<*>>
+        get() = missionsRepository
 
     fun requestToStartTracking(): Boolean {
-        if (tracker.trackingQuests.contains(this)) {
+        if (tracker.trackingQuests.has(this)) {
             return false
         } else {
             tracker.startTracking(this)
@@ -52,7 +55,7 @@ class Quest @Deprecated("Internal only") internal constructor(
     }
 
     fun isBeingTracked(): Boolean {
-        return tracker.trackingQuests.contains(this)
+        return tracker.trackingQuests.has(this)
     }
 
     fun start() {

@@ -43,19 +43,19 @@ class AdaptiveStatusUpdater(private val questManager: QuestManager, private val 
                     val mission = quest.missions[it.id]!!
                     val missionDefinition = mission.definition
                     if (mission.status != Mission.Status.NOT_STARTED_YET && !it.initialized) {
-                        defaultEffect.initializeForEachMember(questMember)
                         missionDefinition.initializeForEachMember(questMember)
+                        defaultEffect.initializeForEachMember(questMember)
 
                         it.initialized = true
                     }
                     if (mission.status.isEnded() && !it.finalized) {
-                        defaultEffect.finalizeForEachMember(questMember)
                         missionDefinition.finalizeForEachMember(questMember)
+                        defaultEffect.finalizeForEachMember(questMember)
                         it.finalized = true
                     }
                     if (mission.status == Mission.Status.COMPLETED && !it.completed) {
-                        defaultEffect.completeForEachMember(questMember)
                         missionDefinition.completeForEachMember(questMember)
+                        defaultEffect.completeForEachMember(questMember)
                         it.completed = true
                     }
                 }

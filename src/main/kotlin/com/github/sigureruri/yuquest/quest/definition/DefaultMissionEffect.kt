@@ -7,10 +7,10 @@ import com.github.sigureruri.yuquest.quest.missiontype.MemberRelatedEvent
 data class DefaultMissionEffect(
     val filter: (Mission<*>, MemberRelatedEvent) -> Boolean = { _, _ -> true },
     val initializeOnce: (Mission<*>) -> Unit = { },
-    val initializeForEachMember: (Mission<*>, QuestMember) -> Unit = { _, _ -> },
+    val initializeForEachMember: (QuestMember) -> Unit = { },
     val finalizeOnce: (Mission<*>) -> Unit = { },
-    val finalizeForEachMember: (Mission<*>, QuestMember) -> Unit = { _, _ -> },
+    val finalizeForEachMember: (QuestMember) -> Unit = { },
     val completeOnce: (Mission<*>) -> Unit = { },
-    val completeForEachMember: (Mission<*>, QuestMember) -> Unit = { _, _ -> },
+    val completeForEachMember: (QuestMember) -> Unit = { },
     val fire: (Mission<*>, MemberRelatedEvent) -> Unit = { _, _ -> }
 )

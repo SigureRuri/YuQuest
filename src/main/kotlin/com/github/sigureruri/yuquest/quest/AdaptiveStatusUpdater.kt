@@ -31,11 +31,14 @@ class AdaptiveStatusUpdater(private val questManager: QuestManager, private val 
     fun update() {
         val trackingQuests = questManager.trackingQuests
 
-        target.questAdaptiveStatus.values.forEach { questAdaptiveStatus ->
-            val missionAdaptiveStatus = questAdaptiveStatus.missionsAdaptiveStatus.values
+        target.questAdaptiveStatus.forEach { questAdaptiveStatus ->
+            val missionAdaptiveStatus = questAdaptiveStatus.missionsAdaptiveStatus
+
+            val a: Collection<String>? = null
+
 
             // trackingQuestsにquestAdaptiveStatusが含まれていれば。
-            if (trackingQuests.values.any { it.id == questAdaptiveStatus.id }) {
+            if (trackingQuests.any { it.id == questAdaptiveStatus.id }) {
                 val quest = trackingQuests[questAdaptiveStatus.id]!!
                 val defaultEffect = quest.definition.missionDefinitions.defaultEffect
 

@@ -29,7 +29,7 @@ class Quest @Deprecated("Internal only") internal constructor(
 
     private val missionsRepository: IdentifiedDataRepository<YuId, Mission<*>> =
         MutableIdentifiedDataRepository<YuId, Mission<*>>().apply {
-            definition.missionDefinitions.definitions.values
+            definition.missionDefinitions.definitions
                 .map {
                     if (defaultMissionValues.contains(it.id)) {
                         val defaultValue = defaultMissionValues[it.id]!!
@@ -62,7 +62,7 @@ class Quest @Deprecated("Internal only") internal constructor(
         requireNotStarted()
         status = Status.STARTED
 
-        missionsRepository.values.forEach {
+        missionsRepository.forEach {
             if (MissionDependencyInterpreter.fulfillConditions(this, it.dependency)) {
                 it.start()
             }
@@ -77,7 +77,7 @@ class Quest @Deprecated("Internal only") internal constructor(
         requireStarted()
         status = Status.FORCIBLY_ENDED
 
-        missionsRepository.values
+        missionsRepository
             .filter { it.status == Mission.Status.STARTED }
             .forEach {
                 it.end()
@@ -116,7 +116,7 @@ class Quest @Deprecated("Internal only") internal constructor(
     private fun requireStarted() = require(status == Status.STARTED) { "${toString()} should be started" }
 
     private fun requireAllMissionsAreFinished() =
-        require(missionsRepository.values.all { it.status.isEnded() })
+        require(missionsRepository.all { it.status.isEnded() })
 
     enum class Status {
         NOT_STARTED_YET,

@@ -45,21 +45,21 @@ class QuestManager(private val plugin: YuQuest) {
     fun startWith(definition: QuestDefinition, members: IdentifiedDataRepository<UUID, QuestMember>) {
         val quest = Quest(tracker, historyOperator, definition)
 
-        members.values.forEach { quest.addMember(it) }
+        members.forEach { quest.addMember(it) }
 
         quest.start()
     }
 
     @Suppress("UNCHECKED_CAST")
     fun <T : MemberRelatedEvent> fireMission(type: MissionType<T>, context: T) {
-        tracker.trackingQuests.values.forEach { quest ->
-            quest.missions.values
+        tracker.trackingQuests.forEach { quest ->
+            quest.missions
                 .asSequence()
                 .filter { it.type.isInstanceOf(type) }
                 .map { it as Mission<T> }
                 .filter { it.status == Mission.Status.STARTED }
                 .filter { it.filter(context) }
-                .filter { context.members.values.any { quest.members.has(it) } }
+                .filter { context.members.any { quest.members.has(it) } }
                 .toList()
                 .forEach { mission ->
                     mission.fire(context)

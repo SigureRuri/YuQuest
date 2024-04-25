@@ -38,12 +38,12 @@ class QuestPersistenceOperator(
     fun saveAllData() {
         // 既に終了した保存済みのデータを永続化層から削除
         questDataManipulator.getLoadableKeys()
-            .filter { key -> !tracker.trackingQuests.values.map { it.id }.contains(key) }
+            .filter { key -> !tracker.trackingQuests.map { it.id }.contains(key) }
             .forEach {
                 questDataManipulator.remove(it)
             }
 
-        tracker.trackingQuests.values.forEach {
+        tracker.trackingQuests.forEach {
             questDataManipulator.save(it)
         }
     }

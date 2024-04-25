@@ -6,7 +6,7 @@ package com.github.sigureruri.yuquest.data.identified
  * @param K
  * @param V
  */
-open class IdentifiedDataRepository<K, V : Identified<K>>(data: Set<V> = setOf()) {
+open class IdentifiedDataRepository<K, V : Identified<K>>(data: Set<V> = setOf()) : Collection<V> by data {
     init {
         data.forEach { dataMap[it.id] = it }
     }
@@ -14,9 +14,6 @@ open class IdentifiedDataRepository<K, V : Identified<K>>(data: Set<V> = setOf()
     protected val dataMap = mutableMapOf<K, V>()
 
     operator fun get(id: K) = dataMap[id]
-
-    val values: Set<V>
-        get() = dataMap.values.toSet()
 
     fun has(id: K) = dataMap.contains(id)
 

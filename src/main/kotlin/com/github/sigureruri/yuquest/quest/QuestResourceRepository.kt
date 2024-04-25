@@ -31,7 +31,7 @@ class QuestResourceRepository {
         return missionTypeRepository[id] ?: throw IllegalArgumentException("$id is not registered.")
     }
 
-    fun getQuestDefinitions() = questDefinitionRepository.values
+    fun getQuestDefinitions() = questDefinitionRepository
 
-    fun getMissionTypes() = missionTypeRepository.values
+    fun getMissionTypes() = missionTypeRepository
 }

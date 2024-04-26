@@ -47,7 +47,7 @@ class YamlPlayerDataManipulator(private val dataFolder: File) : PersistentDataMa
         return setOf(
             *dataFolder.listFiles { file ->
                 file.isFile && file.extension == "yml"
-            }.mapNotNull {
+            }!!.mapNotNull {
                 try {
                     UUID.fromString(it.nameWithoutExtension)
                 } catch (e: IllegalArgumentException) {

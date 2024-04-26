@@ -29,7 +29,7 @@ data class FinalizedHistory(
                     Mission.Status.COMPLETED -> MissionFinalizedStatus.COMPLETED
                     else -> MissionFinalizedStatus.NOT_COMPLETED
                 }
-                it.id to MissionFinalizedStatus.COMPLETED
+                it.id to status
             }
             return FinalizedHistory(quest.id, quest.definition.id, isCompleted, missionStatus)
         }

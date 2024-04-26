@@ -18,12 +18,12 @@ class QuestManager(private val plugin: YuQuest) {
 
     private val tracker = QuestTracker()
 
-    private val persistenceOperator = QuestPersistenceOperator(plugin, resourceManager, tracker)
-
     private val historyOperator = FinalizedHistoryPersistenceOperator(plugin)
 
     val finalizedHistoryAccessor: FinalizedHistoryAccessor
         get() = historyOperator
+
+    private val persistenceOperator = QuestPersistenceOperator(plugin, resourceManager, tracker, historyOperator)
 
     fun enable() {
         require(plugin.isEnabled)

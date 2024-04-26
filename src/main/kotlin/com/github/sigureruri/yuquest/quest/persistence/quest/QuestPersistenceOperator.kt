@@ -5,6 +5,7 @@ import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.quest.QuestResourceRepository
 import com.github.sigureruri.yuquest.quest.QuestTracker
 import com.github.sigureruri.yuquest.quest.bukkit.QuestLoader
+import com.github.sigureruri.yuquest.quest.persistence.finalizedhistory.FinalizedHistoryWriter
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.*
@@ -12,13 +13,14 @@ import java.util.*
 class QuestPersistenceOperator(
     private val plugin: JavaPlugin,
     private val resources: QuestResourceRepository,
-    private val tracker: QuestTracker
+    private val tracker: QuestTracker,
+    private val historyWriter: FinalizedHistoryWriter
 ) {
     private var isEnabled = false
 
     private val dataFile = File(plugin.dataFolder, "quests")
 
-    private val questDataManipulator: PersistentDataManipulator<UUID, Quest> = YamlQuestDataManipulator(dataFile, resources, tracker)
+    private val questDataManipulator: PersistentDataManipulator<UUID, Quest> = YamlQuestDataManipulator(dataFile, resources, tracker, historyWriter)
 
     fun enable() {
         require(plugin.isEnabled)

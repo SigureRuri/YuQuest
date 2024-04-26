@@ -8,6 +8,7 @@ import com.github.sigureruri.yuquest.quest.Quest
 import com.github.sigureruri.yuquest.quest.QuestMember
 import com.github.sigureruri.yuquest.quest.QuestResourceRepository
 import com.github.sigureruri.yuquest.quest.QuestTracker
+import com.github.sigureruri.yuquest.quest.persistence.finalizedhistory.FinalizedHistoryWriter
 import com.github.sigureruri.yuquest.util.YuId
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
@@ -16,12 +17,13 @@ import java.util.*
 
 private typealias MissionDefaultValue = Quest.MissionDefaultValue
 
-class YamlQuestDataManipulator(private val dataFolder: File, private val resourceManager: QuestResourceRepository, private val tracker: QuestTracker) : PersistentDataManipulator<UUID, Quest> {
+class YamlQuestDataManipulator(private val dataFolder: File, private val resourceManager: QuestResourceRepository, private val tracker: QuestTracker, private val historyWriter: FinalizedHistoryWriter) : PersistentDataManipulator<UUID, Quest> {
     init {
         dataFolder.mkdirs()
         require(dataFolder.isDirectory) { "dataFolder must be directory" }
     }
 
+    @Suppress("DEPRECATION")
     override fun load(key: UUID): Quest {
         val dataFile = File(dataFolder, "$key.yml")
         val yamlConfig = YamlConfiguration.loadConfiguration(dataFile)
@@ -46,7 +48,7 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
 
         // TODO: PersistentDataManipulatorは永続化されたデータへ(から)のオブジェクトの保存(復元)
         // TODO: に責務をとどめるべきであって、当該オブジェクトのTracking状態まで管理するべきでない
-        return Quest(key, tracker, questDefinition, questStatus, members, missionValueProviders)
+        return Quest(key, tracker, historyWriter, questDefinition, questStatus, members, missionValueProviders)
     }
 
     override fun save(data: Quest) {
@@ -61,7 +63,7 @@ class YamlQuestDataManipulator(private val dataFolder: File, private val resourc
         with(yamlConfig) {
             set("definition-id", data.definition.id.id)
             set("status", data.status.toString())
-            set("members", data.members.values.map { it.id.toString() })
+            set("members", data.members.map { it.id.toString() })
             with(createSection("missions")) {
                 data.missions.forEach {
                     with(createSection(it.id.id)) {

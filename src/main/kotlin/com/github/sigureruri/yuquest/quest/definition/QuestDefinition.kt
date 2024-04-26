@@ -12,9 +12,9 @@ data class QuestDefinition(
     val description: List<Component>,
     val missionDefinitions: MissionDefinitions,
     val initializeOnce: (Quest) -> Unit,
-    val initializeForEachMember: (Quest, QuestMember) -> Unit,
+    val initializeForEachMember: (QuestMember) -> Unit,
     val finalizeOnce: (Quest) -> Unit,
-    val finalizeForEachMember: (Quest, QuestMember) -> Unit,
+    val finalizeForEachMember: (QuestMember) -> Unit,
     val completeOnce: (Quest) -> Unit,
-    val completeForEachMember: (Quest, QuestMember) -> Unit
+    val completeForEachMember: (QuestMember) -> Unit
 ) : Identified<YuId>()

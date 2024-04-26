@@ -34,13 +34,30 @@ class AdaptiveStatusUpdater(private val questManager: QuestManager, private val 
         target.questAdaptiveStatus.forEach { questAdaptiveStatus ->
             val missionAdaptiveStatus = questAdaptiveStatus.missionsAdaptiveStatus
 
-            val a: Collection<String>? = null
-
-
             // trackingQuestsにquestAdaptiveStatusが含まれていれば。
-            if (trackingQuests.any { it.id == questAdaptiveStatus.id }) {
+            if (trackingQuests.has(questAdaptiveStatus.id)) {
                 val quest = trackingQuests[questAdaptiveStatus.id]!!
+                val questDefinition = quest.definition
                 val defaultEffect = quest.definition.missionDefinitions.defaultEffect
+
+                if (quest.status != Quest.Status.NOT_STARTED_YET && !questAdaptiveStatus.initialized) {
+                    questDefinition.initializeForEachMember(questMember)
+                    defaultEffect.initializeForEachMember(questMember)
+
+                    questAdaptiveStatus.initialized = true
+                }
+                if (quest.status.isEnded() && !questAdaptiveStatus.finalized) {
+                    questDefinition.finalizeForEachMember(questMember)
+                    defaultEffect.finalizeForEachMember(questMember)
+
+                    questAdaptiveStatus.finalized = true
+                }
+                if (quest.status == Quest.Status.COMPLETED && !questAdaptiveStatus.completed) {
+                    questDefinition.completeForEachMember(questMember)
+                    defaultEffect.completeForEachMember(questMember)
+
+                    questAdaptiveStatus.completed = true
+                }
 
                 missionAdaptiveStatus.forEach {
                     val mission = quest.missions[it.id]!!
